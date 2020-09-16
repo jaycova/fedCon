@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Untitled Document</title>
+<link href="stylesheet.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<?php
+$servername = "localhost";
+$username = "root";
+$password = "RFVbgt%6";
+$dbname = "fed_contractor";
+
+$state = $_POST['state'];
+echo $_POST["state"];
+
+$state = $_POST['zipcodes'];
+echo $_POST["zipcodes"];
+
+// Create connection
+$conn = new mysqli($servername, $username, $password , $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+#echo "Connected successfully";
+
+$sql = "SELECT LEGAL_BUSINESS_NAME, DBA_NAME, PHYSICAL_ADDRESS_LINE_1, PHYSICAL_ADDRESS_LINE_2, PHYSICAL_ADDRESS_CITY, PHYSICAL_ADDRESS_PROVINCE_OR_STATE, PHYSICAL_ADDRESS_ZIP_POSTAL_CODE, PHYSICAL_ADDRESS_ZIP_CODE_PLUS_4, PHYSICAL_ADDRESS_COUNTRY_CODE, CORPORATE_URL FROM contractors where PHYSICAL_ADDRESS_PROVINCE_OR_STATE='$state' limit 10";
+
+
+	
+$result = $conn->query($sql);
+
+
+if ($result->num_rows > 0) {
+  // output data of each row
+                echo "<table border=3>";
+                echo "<tr>";
+                echo "<th>Legal Business Name</th>";
+                echo "<th>DBA Name</th>";
+                echo "<th>Business Address</th>";
+                echo "<th>Website  Address</th>";
+                echo "</tr>";
+                while($row = $result->fetch_assoc()) {
+                        echo  "<tr><td>" . $row["LEGAL_BUSINESS_NAME"]. "</td>";
+                echo  "<td>" . $row["DBA_NAME"]. "</td>";
+                echo  "<td>" . $row["PHYSICAL_ADDRESS_LINE_1"]. "<br>" . $row["PHYSICAL_ADDRESS_LINE_2"]. "<br>" . $row["PHYSICAL_ADDRESS_CITY"]. ", " . $row["PHYSICAL_ADDRESS_PROVINCE_OR_STATE"]. " " . $row["PHYSICAL_ADDRESS_ZIP_POSTAL_CODE"]. " + " . $row["PHYSICAL_ADDRESS_ZIP_CODE_PLUS_4"]. " " . $row["PHYSICAL_ADDRESS_COUNTRY_CODE"]. "</td>";
+                echo  "<td>" . $row["CORPORATE_URL"]. "</td></tr>";
+
+                }
+                echo "</table>";
+} else {
+  echo "0 results";
+}
+
+
+?>
+~                                                                                                                          
+~                                           
+</body>
+</html>
